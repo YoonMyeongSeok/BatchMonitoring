@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd	
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="com/boneis/batchjob/base/config/SqlMapConfig.xml"/>
+	</bean>
+	<bean id="SqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	<!-- //MySql -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		<property name="validationQuery" value="select 1"/>
+		<property name="maxIdle" value="16"/>
+		<property name="maxActive" value="16"/>
+		<property name="timeBetweenEvictionRunsMillis" value="60000"/>
+		<property name="testWhileIdle" value="true"/>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:conf/jdbc/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="configuration" class="org.apache.commons.configuration.CompositeConfiguration">
+		<constructor-arg>
+			<list>
+				<bean class="org.apache.commons.configuration.XMLConfiguration">
+					<constructor-arg type="java.lang.String">
+						<value>conf/environment/real.boneis.xml</value>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean class="com.boneis.support.config.Config">
+		<property name="configuration" ref="configuration"></property>
+	</bean>
+	
+	<bean id="sequenceRepository" class="com.boneis.domain.base.sequence.SequenceRepository">
+		<property name="sqlMapClientTemplate" ref="SqlMapClientTemplate"/>
+	</bean>
+	
+	<bean id="batchjobRepository" class="com.boneis.domain.tool.batchjob.BatchJobRepository">
+		<property name="sqlMapClientTemplate" ref="SqlMapClientTemplate"/>
+		<property name="sequenceRepository" ref="sequenceRepository"/>
+	</bean>
+	
+	<bean id="batchjoblogRepository" class="com.boneis.domain.tool.batchjob.joblog.BatchJobLogRepository">
+		<property name="sqlMapClientTemplate" ref="SqlMapClientTemplate"/>
+		<property name="sequenceRepository" ref="sequenceRepository"/>
+	</bean>
+	
+	<bean id="batchsteplogRepository" class="com.boneis.domain.tool.batchjob.steplog.BatchStepLogRepository">
+		<property name="sqlMapClientTemplate" ref="SqlMapClientTemplate"/>
+		<property name="sequenceRepository" ref="sequenceRepository"/>
+	</bean>
+	
+</beans>

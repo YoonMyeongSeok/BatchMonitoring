@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+	<batch>
+		<shell>
+			<windows>
+				C:\\workspace\\boneis\\target\\classes\\JavaBatchJob.bat
+			</windows>
+			<linux>
+				/apps/web/htdocs/servlet/batch.boneis.com/batch/WEB-INF/classes/JavaBatchJob.sh
+			</linux>
+		</shell>
+		<log>
+			<path>
+				/home/boneisadmin/batchlog
+			</path>
+		</log>
+	</batch>
+</configuration>

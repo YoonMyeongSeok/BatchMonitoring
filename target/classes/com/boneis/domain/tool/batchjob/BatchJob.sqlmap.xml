@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="BatchJobs">
+
+	<typeAlias alias="BatchJob" type="com.boneis.domain.tool.batchjob.BatchJob"/>
+
+	<resultMap id="batchjob" class="BatchJob">
+		<result property="seq" column="mbj_seq"/>
+		<result property="name" column="mbj_name"/>
+		<result property="clazz" column="mbj_class"/>
+		<result property="cronexpression" column="mbj_cronexpression"/>
+		<result property="serverip" column="mbj_serverip"/>
+		<result property="serveros" column="mbj_serveros"/>
+		<result property="execplace" column="mbj_execplace"/>
+		<result property="useyn" column="mbj_useyn"/>
+		<result property="execyn" column="mbj_execyn"/>
+		<result property="starttime" column="mbj_starttime"/>
+		<result property="endtime" column="mbj_endtime"/>
+		<result property="processtime" column="mbj_processtime"/>
+		<result property="lastresultyn" column="mbj_lastresultyn"/>
+		<result property="smslist" column="mbj_smslist"/>
+		<result property="emaillist" column="mbj_emaillist"/>
+		<result property="stopyn" column="mbj_stopyn"/>
+	</resultMap>
+	<resultMap id="batchjob2" class="BatchJob">
+		<result property="seq" column="mbj_seq"/>
+		<result property="name" column="mbj_name"/>
+		<result property="smslist" column="mbj_smslist"/>
+		<result property="emaillist" column="mbj_emaillist"/>
+	</resultMap>
+	
+	<insert id="batchjob.insert" parameterClass="BatchJob"><![CDATA[ 
+		INSERT INTO ma_batchjob
+		(mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn, mbj_starttime, mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn) 
+		VALUES ( #seq#, #name#, #clazz#, #cronexpression#, #serverip#, #serveros#, #execplace#, #useyn#, #execyn#, #starttime#, #endtime#, #processtime#, 0, #smslist#, #emaillist#, 'N' )
+	]]></insert> 
+	
+	<update id="batchjob.update" parameterClass="BatchJob"><![CDATA[ 
+		UPDATE ma_batchjob 
+		SET mbj_name = #name#, mbj_class = #clazz#, mbj_cronexpression = #cronexpression#, mbj_serverip = #serverip#, mbj_serveros = #serveros#, mbj_execplace = #execplace#, mbj_useyn = #useyn#, mbj_smslist = #smslist#, mbj_emaillist = #emaillist#, mbj_stopyn = 'N' 
+		WHERE mbj_seq = #seq#
+	]]></update>
+	
+	<update id="batchjob.update.start" parameterClass="BatchJob"><![CDATA[ 
+		UPDATE ma_batchjob 
+		SET mbj_execyn = '1', mbj_starttime = now(), mbj_processtime = 0, mbj_lastresultyn = 3, mbj_stopyn = 'N'
+		WHERE mbj_seq = #seq#
+	]]></update>
+	
+	<update id="batchjob.update.end" parameterClass="BatchJob"><![CDATA[ 
+		UPDATE ma_batchjob 
+		SET mbj_execyn = '2', mbj_endtime = now(), mbj_processtime = now() - mbj_starttime, mbj_lastresultyn = #lastresultyn#, mbj_stopyn = 'Y'
+		WHERE mbj_seq = #seq#
+	]]></update>
+	
+	<update id="batchjob.update.stopyn" parameterClass="batchjob"><![CDATA[
+		UPDATE ma_batchjob
+		SET mbj_stopyn = #stopyn#
+		WHERE mbj_seq = #seq#
+	]]>
+	</update>
+	
+	<update id="batchjob.update.useyn" parameterClass="BatchJob"><![CDATA[ 
+		UPDATE ma_batchjob 
+		SET mbj_useyn = #useyn#
+		WHERE mbj_seq = #seq#
+	]]></update>
+	
+	<update id="batchjob.update.useyn.s" parameterClass="BatchJob"><![CDATA[ 
+		UPDATE ma_batchjob 
+		SET mbj_useyn = 1
+		WHERE mbj_serverip = #serverip#
+		AND mbj_useyn = 3
+	]]></update>
+	
+	<delete id="batchjob.delete" parameterClass="BatchJob"><![CDATA[ 
+		DELETE FROM ma_batchjob
+		WHERE mbj_seq = #seq#
+	]]></delete>
+	
+	<select id="batchjob.info" resultMap="batchjob" parameterClass="BatchJob"><![CDATA[ 
+		SELECT mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn, mbj_starttime, mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn 
+		FROM ma_batchjob
+		]]>
+		<dynamic prepend="WHERE">
+			<isGreaterThan prepend="AND" property="seq" compareValue="0"><![CDATA[ 
+				mbj_seq = #seq#
+			]]></isGreaterThan>
+		</dynamic>
+	</select>
+	
+	<sql id="batchjob.list.where">
+		<dynamic prepend="WHERE">
+			<isGreaterThan prepend="AND" property="useyn" compareValue="0"><![CDATA[ 
+				mbj_useyn = #useyn#
+			]]></isGreaterThan>
+			<isGreaterThan prepend="AND" property="execyn" compareValue="0"><![CDATA[ 
+				mbj_execyn = #execyn#
+			]]></isGreaterThan>
+			<isNotNull prepend="AND" property="name"><![CDATA[ 
+				mbj_name like concat('%',#name#,'%')
+			]]></isNotNull>
+		</dynamic>
+	</sql>
+	<select id="batchjob.list" resultMap="batchjob" parameterClass="BatchJob"><![CDATA[ 
+		SELECT mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn, mbj_starttime, mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn 
+		FROM ma_batchjob
+		]]>
+		<include refid="batchjob.list.where"/>
+		ORDER BY mbj_starttime desc
+		<isNotNull property="paging">
+			<isGreaterThan property="paging.nowpage" compareValue="0"><![CDATA[ 
+				LIMIT #paging.limitstart#, #paging.listsize#
+			]]></isGreaterThan>
+		</isNotNull>
+	</select>
+	<select id="batchjob.list.count" resultClass="long" parameterClass="BatchJob"><![CDATA[ 
+		SELECT count(mbj_seq) cnt
+		FROM ma_batchjob
+		]]>
+		<include refid="batchjob.list.where"/>
+	</select>
+	
+</sqlMap>

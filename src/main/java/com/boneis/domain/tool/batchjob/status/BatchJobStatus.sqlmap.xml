@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="BatchJobStatuss">
+
+	<typeAlias alias="BatchJobStatus" type="com.boneis.domain.tool.batchjob.status.BatchJobStatus"/>
+
+	<resultMap id="batchjobstatus" class="BatchJobStatus">
+		<result property="serverip" column="bst_serverip"/>
+		<result property="execyn" column="bst_execyn"/>
+	</resultMap>
+	
+	<insert id="batchjobstatus.insert" parameterClass="BatchJobStatus"><![CDATA[ 
+		INSERT INTO ba_status ( bst_serverip, bst_execyn )
+		VALUES ( #serverip#, #execyn# )
+	]]></insert>
+	
+	<update id="batchjobstatus.update" parameterClass="BatchJobStatus"><![CDATA[ 
+		UPDATE ba_status
+		SET bst_execyn = #execyn#
+		WHERE bst_serverip = #serverip#
+	]]></update>
+	
+	<delete id="batchjobstatus.delete" parameterClass="BatchJobStatus"><![CDATA[ 
+		DELETE FROM ba_status
+		WHERE bst_serverip = #serverip#
+	]]></delete>
+	
+	<sql id="batchjobstatus.where">
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="serverip"><![CDATA[ 
+				bst_serverip = #serverip#
+			]]></isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<select id="batchjobstatus.info" resultMap="batchjobstatus" parameterClass="BatchJobStatus"><![CDATA[ 
+		SELECT bst_serverip, bst_execyn
+		FROM ba_status
+		]]><include refid="batchjobstatus.where"/>
+	</select>
+	
+	<select id="batchjobstatus.list.count" resultClass="long" parameterClass="BatchJobStatus"><![CDATA[ 
+		SELECT count(bst_serverip) cnt
+		FROM ba_status
+		]]>
+		<include refid="batchjobstatus.where"/>
+	</select>
+	
+</sqlMap>

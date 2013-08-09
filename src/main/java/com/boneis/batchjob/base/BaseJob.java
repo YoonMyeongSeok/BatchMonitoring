@@ -1,6 +1,9 @@
 package com.boneis.batchjob.base;
 
+import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -120,12 +123,7 @@ public abstract class BaseJob extends QuartzJobBean {
 		for(int i=0;i<batchstepList.size();i++) {
 			BaseJobStep batchstep = batchstepList.get(i);
 			this.batchjob.setSeq(this.batchno);
-			this.execjobinfo = this.batchjob.getInfo();
-			if(!execjobinfo.getStopyn().equals("Y")){
-				batchstep.start(this);
-			}else{
-				break;
-			}
+			batchstep.start(this);			
 		}
 	}
 	
@@ -136,30 +134,19 @@ public abstract class BaseJob extends QuartzJobBean {
 		before(result, resultmsg);
 		try{
 			start();
-			if(!this.execjobinfo.getStopyn().equals("Y")){
-				result = Batch.RESULT_SUCCESS;
-				resultmsg = "배치처리완료";
-			}else{
-				result = Batch.RESULT_STOP;
-				resultmsg = "배치실행중지";
-			}
+			result = Batch.RESULT_SUCCESS;
+			resultmsg = "배치처리완료";
 		}catch(Exception e){
 			result = Batch.RESULT_FAIL;
 			resultmsg = "배치처리실패:"+e.toString();
 		}finally{
-			after(result, resultmsg);
+			//after(result, resultmsg);
 		}
 	}
 	public void exec() {
 		baseinit();
 		init();
 		innerexec();
-		
-/*		try{
-			executeInternal(context);
-		}catch(Exception e){
-			e.printStackTrace();
-		}*/
 	}
 	protected void init(){};
 	
@@ -169,6 +156,34 @@ public abstract class BaseJob extends QuartzJobBean {
 	
 	public Object get(String key) {
 		return this.params.get(key);
+	}
+	
+	public void updatePid(String pid){		
+		BatchJob batchjob = new BatchJob(batchjobRepository);
+		batchjob.setSeq(this.batchno);
+		batchjob.setPid(pid);
+		batchjob.update("pid");
+	}
+	
+	public String getPid(){
+		String pid;
+		BatchJob batchjob = new BatchJob(batchjobRepository);
+		batchjob.setSeq(this.batchno);
+		pid = batchjob.getInfo().getPid();
+		
+		return pid;
+	}
+	
+	public void updateServerInfo(String args){
+		String[] serverInfo = args.split("@##");
+		BatchJob batchjob = new BatchJob(batchjobRepository);
+		batchjob.setSeq(this.batchno);
+		batchjob.setServerUseMem(serverInfo[0].substring(5));
+		batchjob.setServerUseCpu(serverInfo[1].substring(5));
+		batchjob.setBatchUseMem(serverInfo[2].substring(4));
+		batchjob.setBatchUseCpu(serverInfo[3].substring(4));
+		batchjob.update("serverInfo");
+		
 	}
 	
 	// Get & Set start................................

@@ -1,0 +1,43 @@
+10
+
+dir
+155
+svn://114.200.199.205/repos/batch/trunk/boneis/src/main/java/com/boneis/domain/base
+svn://114.200.199.205/repos/batch
+
+
+
+2013-07-23T00:39:47.358496Z
+88
+yms0312
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+12c2ddb7-e425-4dc1-85b9-47e247af7567
+
+message
+dir
+
+paging
+dir
+
+root
+dir
+
+searchparams
+dir
+
+sequence
+dir
+

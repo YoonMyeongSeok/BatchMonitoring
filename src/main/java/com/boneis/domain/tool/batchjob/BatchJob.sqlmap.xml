@@ -23,6 +23,11 @@
 		<result property="smslist" column="mbj_smslist"/>
 		<result property="emaillist" column="mbj_emaillist"/>
 		<result property="stopyn" column="mbj_stopyn"/>
+		<result property="pid" column="mbj_pid"/>
+		<result property="serverUseMem" column="serverUseMem"/>
+		<result property="serverUseCpu" column="serverUseCpu"/>
+		<result property="batchUseMem" column="batchUseMem"/>
+		<result property="batchUseCpu" column="batchUseCpu"/>
 	</resultMap>
 	<resultMap id="batchjob2" class="BatchJob">
 		<result property="seq" column="mbj_seq"/>
@@ -33,13 +38,15 @@
 	
 	<insert id="batchjob.insert" parameterClass="BatchJob"><![CDATA[ 
 		INSERT INTO ma_batchjob
-		(mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn, mbj_starttime, mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn) 
+		(mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn, mbj_starttime, mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn, mbj_pid) 
 		VALUES ( #seq#, #name#, #clazz#, #cronexpression#, #serverip#, #serveros#, #execplace#, #useyn#, #execyn#, #starttime#, #endtime#, #processtime#, 0, #smslist#, #emaillist#, 'N' )
 	]]></insert> 
 	
 	<update id="batchjob.update" parameterClass="BatchJob"><![CDATA[ 
 		UPDATE ma_batchjob 
-		SET mbj_name = #name#, mbj_class = #clazz#, mbj_cronexpression = #cronexpression#, mbj_serverip = #serverip#, mbj_serveros = #serveros#, mbj_execplace = #execplace#, mbj_useyn = #useyn#, mbj_smslist = #smslist#, mbj_emaillist = #emaillist#, mbj_stopyn = 'N' 
+		SET mbj_name = #name#, mbj_class = #clazz#, mbj_cronexpression = #cronexpression#, mbj_serverip = #serverip#, mbj_serveros = #serveros#
+		  , mbj_execplace = #execplace#, mbj_useyn = #useyn#, mbj_smslist = #smslist#, mbj_emaillist = #emaillist#, mbj_stopyn = 'N'
+		  , serverUseMem = #serverUseMem#, serverUseCpu = #serverUseCpu#, batchUseMem = #batchUseMem#, batchUseCpu = #batchUseCpu# 
 		WHERE mbj_seq = #seq#
 	]]></update>
 	
@@ -58,6 +65,23 @@
 	<update id="batchjob.update.stopyn" parameterClass="batchjob"><![CDATA[
 		UPDATE ma_batchjob
 		SET mbj_stopyn = #stopyn#
+		WHERE mbj_seq = #seq#
+	]]>
+	</update>
+	
+	<update id="batchjob.update.pid" parameterClass="batchjob"><![CDATA[
+		UPDATE ma_batchjob
+		SET mbj_pid = #pid#
+		WHERE mbj_seq = #seq#
+	]]>
+	</update>
+	
+	<update id="batchjob.update.serverInfo" parameterClass="batchjob"><![CDATA[
+		UPDATE ma_batchjob
+		SET serverUseMem = #serverUseMem#
+		  , serverUseCpu = #serverUseCpu#
+		  , batchUseMem = #batchUseMem#
+		  , batchUseCpu = #batchUseCpu#
 		WHERE mbj_seq = #seq#
 	]]>
 	</update>
@@ -81,7 +105,9 @@
 	]]></delete>
 	
 	<select id="batchjob.info" resultMap="batchjob" parameterClass="BatchJob"><![CDATA[ 
-		SELECT mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn, mbj_starttime, mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn 
+		SELECT mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn
+		     , mbj_starttime, mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn, mbj_pid
+		     , serverUseMem, serverUseCpu, batchUseMem, batchUseCpu 
 		FROM ma_batchjob
 		]]>
 		<dynamic prepend="WHERE">
@@ -105,7 +131,9 @@
 		</dynamic>
 	</sql>
 	<select id="batchjob.list" resultMap="batchjob" parameterClass="BatchJob"><![CDATA[ 
-		SELECT mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn, mbj_starttime, mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn 
+		SELECT mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn, mbj_starttime
+			 , mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn, mbj_pid
+			 , serverUseMem, serverUseCpu, batchUseMem, batchUseCpu 
 		FROM ma_batchjob
 		]]>
 		<include refid="batchjob.list.where"/>

@@ -37,11 +37,11 @@
 	</logger>
 	
     <logger name="java.sql.Connection">
-        <level value="debug" />
+        <level value="info" />
     </logger>
     
     <logger name="java.sql.Statement">
-        <level value="debug" />
+        <level value="info" />
     </logger>
 
 	<!-- Root Logger -->

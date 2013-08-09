@@ -3,6 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div id="divBoardHome">
+
+<div>
+	<table>
+		<tr id="insert">
+			<td id="CPU"></td>
+			<td id="MEM"></td>
+		</tr>
+	</table>	
+</div>
+
 <div>
 	<table width="100%">
 		<tr>
@@ -32,7 +42,7 @@
 			<c:forEach var="item" items="${list}" varStatus="rowCount">
 			<tr id="trBatchJobList_${item.seq}" class="<c:choose><c:when test="${item.lastresultyn eq 2}">error</c:when><c:otherwise>warning</c:otherwise></c:choose>">
 				<td><a id="btn_seq_${item.seq}" style="cursor:pointer" value="${item.seq}" >${item.name}</a></td>
-				<td>${item.serverip} / ${item.serveros} </td>
+				<td><a id="btn_serverInfo_${item.seq}" style="cursor:pointer" value="${item.seq}"> ${item.serverip} </a> / ${item.serveros} </td>				
 				<td>
 					<c:choose>
 						<c:when test="${item.execplace eq 1}">내부</c:when>
@@ -79,10 +89,20 @@
 			</tr>	
 		</table>
 	</div>
-	
-	<script type="text/javascript">
-		jQuery(document).ready(function(){
-		});
+
+	<script type="text/javascript">	
+/* 		jQuery(document).ready(function(){
+			//자동새로고침
+			setTimeout("pageReload()", 10000); //1000=1초 60000=60초
+			start = 10; //타이머의 시간. 상단의 0세개를 지운것과 같아야함
+			function timer(){ 
+			    if(start>=0){ 
+			        times.innerHTML=start; 
+			        setTimeout('timer()', 10000); 
+			    } 
+			    start--; 
+			}			
+		}); */
 			//페이지 처리
 			$(".btnPagebatchjob").bind("click",function(){
 				A.getHtml("/state/batchjobList.b1", "tgp=divContents&np="+$(this).attr("np") + "&search_name=" + $("#search_name").val());
@@ -128,13 +148,13 @@
 			//배치실행
 			jQuery("a[id^='btn_jobstart']").bind("click",function(){
 				A.getHtml("/state/exec.b1", {seq:$(this).attr("value")});
-				setTimeout(pageReload, 2500);
+				//setTimeout(pageReload, 2500);
 			});			
 			
 			//배치중지
 			jQuery("a[id^='btn_jobstop']").bind("click",function(){
 				A.getHtml("/state/stop.b1", {seq:$(this).attr("value")});
-				setTimeout(pageReload, 6000);
+				//setTimeout(pageReload, 3000);
 			});
 			
 			//페이지 새로고침
@@ -142,8 +162,11 @@
 				$("#divBoardHome").load("/state/batchjobList.b1");
 			}
 			
-			//alert($("#test").val())
-			//setTimeout(pageReload, 3000);
+			//서버 및 배치의 CPU 및 Memory 정보 초기화 및 생성
+			jQuery("a[id^='btn_serverInfo']").bind("click",function(){
+				var batchSeq = $(this).attr("value");
+				window.open("/state/monitoringPop.b1?seq="+batchSeq, "Server"+batchSeq, "width=830px,height=370px,top=100px,left=300px");				
+			});
 	</script>
 </div>
 </div>

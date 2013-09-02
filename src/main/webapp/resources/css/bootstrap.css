@@ -611,7 +611,7 @@ cite {
   font-style: normal;
 }
 
-/*¹èÄ¡Á¤º¸ ÆùÆ® »ö»ó*/
+/*ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½*/
 .muted {
   color: #5A5A5A;
 }
@@ -679,7 +679,7 @@ h3 {
   line-height: 40px;
 }
 
-/*¹èÄ¡¸ð´ÏÅÍ¸µ Å«Á¦¸ñ Å©±â*/
+/*ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ Å«ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½*/
 h1 {
   font-size: 40px;
 }
@@ -2122,13 +2122,13 @@ table th[class*="span"],
   text-align:center;
 }
 
-/*¹èÄ¡Á¤º¸ <td> ¹è°æ »ö»ó*/
+/*ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ <td> ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½*/
 .table tbody tr.warning td {
   background-color: #FFFFFF;
   text-align:center;
 }
 
-/*¹èÄ¡Á¤º¸ ÃÖ»óÀ§ <td> ¹è°æ »ö»ó*/
+/*ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½Ö»ï¿½ï¿½ï¿½ <td> ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½*/
 .table tbody tr.info td {
   background-color: #8CBEDC;
   text-align: center;
@@ -3316,7 +3316,7 @@ input[type="button"].btn-block {
   background-color: #942a25 \9;
 }
 
-/*¹èÄ¡ Á¤º¸ > µî·Ï ¹öÆ° °ü·Ã*/
+/*ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ > ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½ï¿½*/
 .btn-success {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);

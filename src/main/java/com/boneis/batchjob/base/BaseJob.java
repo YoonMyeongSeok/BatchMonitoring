@@ -1,9 +1,5 @@
 package com.boneis.batchjob.base;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +19,9 @@ import com.boneis.domain.base.root.Repository;
 import com.boneis.domain.tool.batchjob.BatchJob;
 import com.boneis.domain.tool.batchjob.joblog.BatchJobLog;
 import com.boneis.domain.tool.batchjob.steplog.BatchStepLog;
-import com.boneis.support.util.Util;
+import com.boneis.support.util.FileLogUtil;
 
-public abstract class BaseJob extends QuartzJobBean {
+public class BaseJob extends QuartzJobBean {
 
 	private static Logger logger = LoggerFactory.getLogger(BaseJob.class);
 	private List<BaseJobStep> batchstepList = new ArrayList<BaseJobStep>();
@@ -42,7 +38,6 @@ public abstract class BaseJob extends QuartzJobBean {
 	private BatchStepLog batchsteplog;
 	private BatchJob execjobinfo;
 	private HashMap<String,Object> params = new HashMap<String,Object>();
-	private JobExecutionContext context;
 	
 	// Constructor start..............................................
 	public BaseJob() {
@@ -50,39 +45,14 @@ public abstract class BaseJob extends QuartzJobBean {
 		this.contextList.add("com/boneis/batchjob/base/config/base-context.xml");
 	}
 	// Constructor end..............................................
-
-	@Override
-	protected void executeInternal(JobExecutionContext context)
-			throws JobExecutionException {
-		String ip = Util.getServerIp();
-		baseinit();
-		init();
-		
-		if(ip.equals(this.execjobinfo.getServerip())){
-			if(this.execjobinfo.getExecplace()==Batch.INPROCESS){
-				// 내부 프로세스로 배치처리....
-				innerexec();
-			}else if(this.execjobinfo.getExecplace()==Batch.OUTPROCESS){
-				// 외부 프로세스로 배치처리....
-				try {
-					String[] command = new String[4];
-					command[0] = "cmd";
-					command[1] = "/c";
-					command[2] = Batch.JAVA_BATCH_JOB_SHELL_LINUX;
-					if(Batch.WINDOWS.equals(this.execjobinfo.getServeros())){
-						command[2] = Batch.JAVA_BATCH_JOB_SHELL_WINDOWS;
-					}
-					command[3] = this.batchno+"";
-					Runtime.getRuntime().exec(command);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 	
+	/*
+	 *초기화작업
+	 *생성자 Parameter로 XML 파일의 class path를 지정해준다.
+	 *배치잡과 잡로그, 스텝로그 객체를 생성한다.
+	 */
 	@SuppressWarnings("unchecked")
-	private void baseinit() {
+	private void baseinit() {		
 		this.basecontext = new GenericXmlApplicationContext(this.contextList.toArray(new String[0]));
 		this.batchjobRepository = (Repository<BatchJob>)this.basecontext.getBean("batchjobRepository");
 		this.batchjob = new BatchJob(this.batchjobRepository);
@@ -95,9 +65,11 @@ public abstract class BaseJob extends QuartzJobBean {
 		this.beforepolicy = new JobBeforePolicyImpl();
 	}
 	
-	private void before(long result, String msg) {
-		if(this.beforepolicy.isNext(this)){
-			logger.info("Batch Started.......................resultyn:"+result+", msg:"+msg);
+	/*
+	 * 배치를 실행하기 전에 실행코드와 메세지를 세팅해준다.
+	 */
+	private void before(long result, String msg) {		
+		if(this.beforepolicy.isNext(this)){			
 			this.batchjob.setSeq(this.batchno);
 			this.execjobinfo = this.batchjob.getInfo();
 			this.batchjob.update("start");
@@ -110,46 +82,32 @@ public abstract class BaseJob extends QuartzJobBean {
 		}
 	}
 	
+	/*
+	 * 배치실행 도중 또는 배치종료 후에 결과코드와 메세지를 세팅해준다.
+	 */
 	private void after(long result, String msg) {
-		logger.info("Batch Ended............................resultyn:"+result+", msg:"+msg);
+		makeLogFile();
 		this.batchjob.setLastresultyn(result);
-		this.batchjob.update("end");
 		this.batchjoblog.setResultyn(result);
 		this.batchjoblog.setResultmsg(msg);
 		this.batchjoblog.update();
 	}
-	
-	private void start() {
-		for(int i=0;i<batchstepList.size();i++) {
-			BaseJobStep batchstep = batchstepList.get(i);
-			this.batchjob.setSeq(this.batchno);
-			batchstep.start(this);			
-		}
-	}
-	
-	public void innerexec() {
-		long result = Batch.RESULT_ING;
-		String resultmsg = "배치처리시작";
-		
-		before(result, resultmsg);
-		try{
-			start();
-			result = Batch.RESULT_SUCCESS;
-			resultmsg = "배치처리완료";
-		}catch(Exception e){
-			result = Batch.RESULT_FAIL;
-			resultmsg = "배치처리실패:"+e.toString();
-		}finally{
-			//after(result, resultmsg);
-		}
-	}
-	public void exec() {
+
+	public void jobStart(long result, String msg) {
 		baseinit();
-		init();
-		innerexec();
+		before(result, msg);
 	}
-	protected void init(){};
 	
+	public void jobProcess(){
+		BaseJobStep baseJobStep = new BaseJobStep();
+		baseJobStep.setBasejob(this);
+		baseJobStep.execStep();
+	}
+	
+	public void jobEnd(long result, String msg){
+		after(result, msg);
+	}
+
 	public void put(String key, Object obj) {
 		this.params.put(key, obj);
 	}
@@ -158,6 +116,9 @@ public abstract class BaseJob extends QuartzJobBean {
 		return this.params.get(key);
 	}
 	
+	/*
+	 * 배치의 PID를 DB에 업데이트
+	 */
 	public void updatePid(String pid){		
 		BatchJob batchjob = new BatchJob(batchjobRepository);
 		batchjob.setSeq(this.batchno);
@@ -165,6 +126,29 @@ public abstract class BaseJob extends QuartzJobBean {
 		batchjob.update("pid");
 	}
 	
+	/*
+	 * 배치의 실행 종료 후 결과 값을 DB에 업데이트.
+	 */
+	public void updateResult(){		
+		BatchJob batchjob = new BatchJob(batchjobRepository);
+		batchjob.setSeq(this.batchno);
+		batchjob.setLastresultyn(4);
+		batchjob.update("resultyn");
+	}
+	
+	/*
+	 * 배치의 실행 종료 후 결과 값을 DB에 업데이트(Parameter - 포함).
+	 */
+	public void updateResult(long resultCode){		
+		BatchJob batchjob = new BatchJob(batchjobRepository);
+		batchjob.setSeq(this.batchno);
+		batchjob.setLastresultyn(resultCode);
+		batchjob.update("resultyn");
+	}
+	
+	/*
+	 * DB에 저장되어 있는 배치의 PID번호를 가져온다.
+	 */
 	public String getPid(){
 		String pid;
 		BatchJob batchjob = new BatchJob(batchjobRepository);
@@ -174,6 +158,9 @@ public abstract class BaseJob extends QuartzJobBean {
 		return pid;
 	}
 	
+	/*
+	 * 서버 및 배치의 Memory & CPU DB에 업데이트
+	 */
 	public void updateServerInfo(String args){
 		String[] serverInfo = args.split("@##");
 		BatchJob batchjob = new BatchJob(batchjobRepository);
@@ -184,6 +171,38 @@ public abstract class BaseJob extends QuartzJobBean {
 		batchjob.setBatchUseCpu(serverInfo[3].substring(4));
 		batchjob.update("serverInfo");
 		
+	}
+	
+	/*
+	 * 강제종료 arg 확인 후 리턴
+	 */
+	public String getStopYn(){
+		BatchJob batchjob = new BatchJob(batchjobRepository);
+		batchjob.setSeq(this.batchno);
+
+		return batchjob.getInfo().getStopyn(); 
+	}
+	
+	public void makeLogFile(){
+		
+    	try { 
+    		//배치번호
+        	long batchNo = this.getExecjobinfo().getSeq();
+        	//배치명
+        	String batchName = this.getExecjobinfo().getName();
+        	//배치로그 내용
+        	StringBuilder sbLog = new StringBuilder();
+        	sbLog.append("-> 로그테스트 ").append(FileLogUtil.FILELOG_NEWLINE);
+        	sbLog.append("-> jobLog test ").append(FileLogUtil.FILELOG_NEWLINE);
+        	sbLog.append("로그 파일 입니다. ").append(FileLogUtil.FILELOG_NEWLINE);
+        	
+    		//파일로그 작성매서드 호출
+        	String logpath = FileLogUtil.saveFileLog(batchNo, batchName, sbLog);
+        	this.getBatchjoblog().setLogpath(logpath);
+    		
+		} catch(Exception ex) {
+			logger.error(ex.toString());
+		}
 	}
 	
 	// Get & Set start................................
@@ -262,5 +281,11 @@ public abstract class BaseJob extends QuartzJobBean {
 		this.execjobinfo = execjobinfo;
 	}
 	// Get & Set end................................
-	
+
+	@Override
+	protected void executeInternal(JobExecutionContext context)
+			throws JobExecutionException {
+		// TODO Auto-generated method stub
+		
+	}	
 }

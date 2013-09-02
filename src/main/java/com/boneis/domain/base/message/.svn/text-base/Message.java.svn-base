@@ -12,10 +12,10 @@ import com.boneis.domain.base.root.ValueObject;
 public class Message extends ValueObject {
 
 	private static MessageSourceAccessor messageSourceAccessor = null;
-	protected String key;
-	protected String param;//msg parameter
+	protected String key;			
+	protected String param;			//msg parameter
 	protected String url;
-	protected String params;//url parameters
+	protected String params;		//url parameters
 	protected String tgp;
 	protected String dataType;
 	protected String sfn;

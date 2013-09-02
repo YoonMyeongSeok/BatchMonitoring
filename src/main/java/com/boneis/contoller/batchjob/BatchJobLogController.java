@@ -27,17 +27,31 @@ public class BatchJobLogController {
 
 	@Autowired
 	private Repository<BatchJob> batchjobRepository;
-
+	
+	/**
+	 * 배치 잡 로그를 볼 수 있는 페이지 호출
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = {"/batchjoblog/board.b1"})
 	public ModelAndView getBatchJobLog(HttpServletRequest request){
 
 		ModelAndView mav = new ModelAndView("batchjob/joblog/jobLog");
 		
+		//BatchJobLog객체 생성 - 페이징처리 추가
 		BatchJobLog batchJobLog = new BatchJobLog(batchjoblogRepository, new Paging(request));
 		BatchJob batchJob = new BatchJob(batchjobRepository);
-
+		
+		//BatchJobLog의 총 개수
 		long totalrow = batchJobLog.getListCount();
 
+		/*
+		 * list : 배치 잡 로그의 리스트
+		 * jobInfo : 잡의 정보
+		 * cnt : 잡의 총 개수
+		 * paging : 잡의 페이징 처리
+		 * tgp : Target Point - joblog.jsp의 html을 뿌려줄 Target
+		 */
 		mav.addObject("list", batchJobLog.getList());
 		mav.addObject("jobInfo", batchJob.getList());
 		mav.addObject("cnt", totalrow);
@@ -47,11 +61,17 @@ public class BatchJobLogController {
 		return mav;
 	}
 
+	/**
+	 * 특정배치의 잡 로그 페이지를 보는 메서드
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = {"/batchjoblog/indivLog.b1"})
 	public ModelAndView getBatchJobLogIndiviual(HttpServletRequest request){
 
 		ModelAndView mav = new ModelAndView("batchjob/joblog/jobLog");
 
+		//seq 초기화 및 Parameter로 넘어온 seq의 정보를 세팅
 		long seq = 0;
 		if(request.getParameter("seq")!=null && request.getParameter("seq").length() > 0){
 			seq = Long.parseLong(request.getParameter("seq"));
@@ -66,8 +86,17 @@ public class BatchJobLogController {
 		BatchJobLog batchJobLog = new BatchJobLog(batchjoblogRepository, new BatchJob(), new Paging(request));
 		batchJobLog.getBatchjob().setSeq(seq);
 
+		//배치잡의 총 카운트
 		long totalrow = batchJobLog.getListCount();
 
+		/*
+		 * list : 배치 잡 로그의 리스트 
+		 * cnt : 잡의 총 개수
+		 * headerYn : 헤더사용의 유무
+		 * paging : 잡의 페이징 처리
+		 * tgp : Target Point - joblog.jsp의 html을 뿌려줄 Target
+		 * seq : 특정 배치의 Seq번호
+		 */
 		mav.addObject("list", batchJobLog.getList());
 		mav.addObject("cnt", totalrow);
 		mav.addObject("headerYn", headerYn);
@@ -77,19 +106,24 @@ public class BatchJobLogController {
 		
 		return mav;
 	}
-
-	@RequestMapping(value = {"/batchjoblog/fileDown.b1"})
-	public ModelAndView errorFileDown(HttpServletRequest request) throws Exception{
+	
+	/**
+	 * 로그파일을 볼 수 있는 메서드
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = {"/batchjoblog/viewLogFile.b1"})
+	public ModelAndView viewLogFile(HttpServletRequest request) throws Exception{
 		
-		ModelAndView mav = new ModelAndView("/batchjob/popupLayer");
+		ModelAndView mav = new ModelAndView("/batchjob/logPop");
 		
 		String logPath = request.getParameter("logPath");
 		String log = "";
 		
 		if(!Util.isNull(logPath)){
 			File file = new File(logPath);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));
-			//BufferedWriter writer = new BufferedWriter(new FileWriter("c:\\result.txt"));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));			
 			
 			String line;			
 			
@@ -98,12 +132,10 @@ public class BatchJobLogController {
 				String token;
 				while ( tk.hasMoreTokens() ) {
 					token = tk.nextToken() + "\r\n";
-					//writer.append(token);
 					log += token;
 				}
 			}
 			reader.close();
-			//writer.close();
 		}
 		
 		mav.addObject("log", log);

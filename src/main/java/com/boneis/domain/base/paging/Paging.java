@@ -6,34 +6,41 @@ import com.boneis.domain.base.root.ValueObject;
 import com.boneis.support.util.Util;
 
 public class Paging extends ValueObject {
-	private long nowpage;
-	private int pagesize;
-	private int listsize;
-	private long totalrow;
-	private long limitstart;
 	
-	// Static Constant
-	public static final int LISTSIZE = 20;
-	public static final int PAGESIZE = 10;
+	private long nowpage;		//현재페이지
+	private int pagesize;		//페이지사이즈
+	private int listsize;		//리스트사이즈
+	private long totalrow;		//총 카운트		
+	private long limitstart;	//제한시작점
+	public static final int LISTSIZE = 20;	//한 페이지에 보여질 리스트 사이즈
+	public static final int PAGESIZE = 10;	//한 화면에 최대 보여질 페이지 사이즈
 	
-	// Constructor ..................................
+	
+	/******************** Constructor *****************/
 	public Paging(){}
 	public Paging(HttpServletRequest request){
-		this.nowpage = Util.parseLong(request.getParameter("np"),1);
+		this.nowpage = Util.parseLong(request.getParameter("np"),1);	//np : Now Page - 현재 페이지
 		this.pagesize = Paging.PAGESIZE;
 		this.listsize = Paging.LISTSIZE;
 		this.limitstart = (this.nowpage-1)*this.listsize;
 	}
 	public Paging(HttpServletRequest request, int pagesize, int listsize){
-		this.nowpage = Util.parseLong(request.getParameter("np"),1);
+		this.nowpage = Util.parseLong(request.getParameter("np"),1);	//np : Now Page - 현재 페이지
 		this.pagesize = pagesize;
 		this.listsize = listsize;
 		this.limitstart = (this.nowpage-1)*this.listsize;
 	}
+	/**************************************************/
 	
-	// Behavior ........................................
+	
+	
+	/******************* Behavior *********************/
+	//name : 페이지 에서 사용할 a태그의 클래스명
 	public String getList(long totalrow, String name) {
-		long nTotalPages, nStartPage, nEndPage;
+		long nTotalPages;	//총 페이지 수
+		long nStartPage;	//페이지 시작 번호
+		long nEndPage;		//페이지 종료 번호
+		
 		String sResultPaging = " | ";
 		this.totalrow = totalrow;
 		
@@ -62,8 +69,11 @@ public class Paging extends ValueObject {
 
 		return sResultPaging;
 	}
+	/**************************************************/
 	
-	// Get & Set .............................................
+	
+	
+	/**************** Get & Set ***********************/
 	public long getNowpage() {
 		return nowpage;
 	}
@@ -94,4 +104,5 @@ public class Paging extends ValueObject {
 	public void setLimitstart(long limitstart) {
 		this.limitstart = limitstart;
 	}
+	/**************************************************/
 }

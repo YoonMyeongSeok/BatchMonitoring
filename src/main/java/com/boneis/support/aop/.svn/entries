@@ -1,15 +1,15 @@
 10
 
 dir
-155
+240
 svn://114.200.199.205/repos/batch/trunk/boneis/src/main/java/com/boneis/support/aop
 svn://114.200.199.205/repos/batch
 
 
 
-2013-06-14T09:12:46.420784Z
-5
-easyland
+2013-08-16T09:24:07.704947Z
+207
+bkshin87
 
 
 svn:special svn:externals svn:needs-lock
@@ -32,11 +32,11 @@ file
 
 
 
-2013-07-03T01:39:47.851000Z
-bd65d3829922b74132b29bc22dd32ed4
-2013-06-14T09:12:46.420784Z
-5
-easyland
+2013-08-26T03:43:05.113000Z
+8f0aa63145a271e993993f5adbc4c8af
+2013-08-16T09:24:07.704947Z
+207
+bkshin87
 has-props
 
 
@@ -58,5 +58,5 @@ has-props
 
 
 
-985
+1068
 

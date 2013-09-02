@@ -21,31 +21,64 @@
 		<result property="batchjob" resultMap="BatchJobs.batchjob2"/>
 	</resultMap>
 	 
+	<!-- 배치 잡 로그 추가 -->
 	<insert id="batchjoblog.insert" parameterClass="BatchJobLog"><![CDATA[ 
-		INSERT INTO tr_batchjoblog
-		(tjl_seq, mbj_seq, tjl_starttime, tjl_processtime, tjl_resultyn, tjl_resultmsg, tjl_logpath) 
-		VALUES ( #seq#, #batchjob.seq#, now(), 0, 2, #resultmsg#, #logpath# )
+		INSERT INTO tr_batchjoblog(
+				tjl_seq
+			  , mbj_seq
+			  , tjl_starttime
+			  , tjl_processtime
+			  , tjl_resultyn
+			  , tjl_resultmsg
+			  , tjl_logpath
+		) VALUES ( 
+			    #seq#
+			  , #batchjob.seq#
+			  , now()
+			  , 0
+			  , 2
+			  , #resultmsg#
+			  , #logpath# 
+		)
 	]]></insert>
 	
+	<!-- 배치잡로그 수정 -->
 	<update id="batchjoblog.update" parameterClass="BatchJobLog"><![CDATA[ 
 		UPDATE tr_batchjoblog 
-		SET tjl_endtime = now(), tjl_processtime = now() - tjl_starttime, tjl_resultyn = #resultyn#, tjl_resultmsg = #resultmsg#, tjl_logpath = #logpath#
+		SET tjl_endtime = now()
+		  , tjl_processtime = now() - tjl_starttime
+		  , tjl_resultyn = #resultyn#
+		  , tjl_resultmsg = #resultmsg#
+		  , tjl_logpath = #logpath#
 		WHERE tjl_seq = #seq#
 	]]></update>
 	
+	<!-- 배치 잡 로그 로그 경로 수정 -->
 	<update id="batchjoblog.update.logpath" parameterClass="BatchJobLog"><![CDATA[ 
 		UPDATE tr_batchjoblog 
 		SET tjl_logpath = #logpath# 
 		WHERE tjl_seq = #seq#
 	]]></update>
 	
+	<!-- 배치 잡 로그 삭제 -->
 	<delete id="batchjoblog.delete" parameterClass="BatchJobLog"><![CDATA[ 
 		DELETE FROM tr_batchjoblog
 		WHERE tjl_seq = #seq#
 	]]></delete>
 	
+	<!-- 특정 배치 잡 로그 정보 가져오기 -->
 	<select id="batchjoblog.info" resultMap="batchjoblog" parameterClass="BatchJobLog"><![CDATA[ 
-		SELECT tjl_seq, mbj_seq, mbj_name, mbj_smslist, mbj_emaillist, tjl_starttime, tjl_endtime, tjl_processtime, tjl_resultyn, tjl_resultmsg, tjl_logpath 
+		SELECT tjl_seq
+		     , mbj_seq
+		     , mbj_name
+		     , mbj_smslist
+		     , mbj_emaillist
+		     , tjl_starttime
+		     , tjl_endtime
+		     , tjl_processtime
+		     , tjl_resultyn
+		     , tjl_resultmsg
+		     , tjl_logpath 
 		FROM tvw_batchjoblog
 		]]>
 		<dynamic prepend="WHERE">
@@ -55,6 +88,7 @@
 		</dynamic>
 	</select>
 	
+	<!-- 배치잡로그 리스트 where -->
 	<sql id="batchjoblog.list.where">
 		<dynamic prepend="WHERE">
 			<isGreaterThan prepend="AND" property="batchjob.seq" compareValue="0"><![CDATA[ 
@@ -62,8 +96,20 @@
 			]]></isGreaterThan>
 		</dynamic>
 	</sql>
+	
+	<!-- 배치잡로그 리스트 -->
 	<select id="batchjoblog.list" resultMap="batchjoblog" parameterClass="BatchJobLog"><![CDATA[ 
-		SELECT tjl_seq, mbj_seq, mbj_name, mbj_smslist, mbj_emaillist, tjl_starttime, tjl_endtime, tjl_processtime, tjl_resultyn, tjl_resultmsg, tjl_logpath
+		SELECT tjl_seq
+		     , mbj_seq
+		     , mbj_name
+		     , mbj_smslist
+		     , mbj_emaillist
+		     , tjl_starttime
+		     , tjl_endtime
+		     , tjl_processtime
+		     , tjl_resultyn
+		     , tjl_resultmsg
+		     , tjl_logpath
 		FROM tvw_batchjoblog
 		]]>
 		<include refid="batchjoblog.list.where"/><![CDATA[
@@ -74,11 +120,13 @@
 			]]></isGreaterThan>
 		</isNotNull>
 	</select>
+	
+	<!-- 배치잡로그 리스트 총 카운트 -->
 	<select id="batchjoblog.list.count" resultClass="long" parameterClass="BatchJobLog"><![CDATA[ 
 		SELECT count(tjl_seq) cnt
 		FROM tr_batchjoblog
 		]]>
 		<include refid="batchjoblog.list.where"/>
 	</select>
-	
+
 </sqlMap>

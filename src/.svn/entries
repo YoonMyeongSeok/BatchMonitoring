@@ -1,34 +1,0 @@
-10
-
-dir
-155
-svn://114.200.199.205/repos/batch/trunk/boneis/src
-svn://114.200.199.205/repos/batch
-
-
-
-2013-08-09T09:09:10.218341Z
-155
-yms0312
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-12c2ddb7-e425-4dc1-85b9-47e247af7567
-
-main
-dir
-
-test
-dir
-

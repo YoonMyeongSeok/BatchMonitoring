@@ -9,7 +9,13 @@ import org.springframework.util.StopWatch;
 public class LoggingAspect {
 	
 	private Log logger = LogFactory.getLog(getClass());
-
+	
+	/**
+	 * 로깅
+	 * @param joinPoint
+	 * @return
+	 * @throws Throwable
+	 */
 	public Object logging(ProceedingJoinPoint joinPoint) throws Throwable {
 		
 		logger.info(" * @시작 - "

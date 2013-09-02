@@ -16,32 +16,65 @@
 		<result property="resultmsg" column="tsl_resultmsg"/>
 		<result property="logpath" column="tsl_logpath"/>
 	</resultMap>
-	 
+	
+	<!-- 배치스텝로그 추가 --> 
 	<insert id="batchsteplog.insert" parameterClass="BatchStepLog"><![CDATA[ 
-		INSERT INTO tr_batchsteplog
-		(tsl_seq, tjl_seq, tsl_starttime, tsl_processtime, tsl_resultyn, tsl_resultmsg, tsl_logpath) 
-		VALUES ( #seq#, #batchjoblog.seq#, now(), 0, #resultyn#, #resultmsg#, #logpath# )
+		INSERT INTO tr_batchsteplog(
+					tsl_seq
+				  , tjl_seq
+				  , tsl_starttime
+				  , tsl_processtime
+				  , tsl_resultyn
+				  , tsl_resultmsg
+				  , tsl_logpath
+		) VALUES ( 
+				    #seq#
+				  , #batchjoblog.seq#
+				  , now()
+				  , 0
+				  , #resultyn#
+				  , #resultmsg#
+				  , #logpath# 
+		)
 	]]></insert>
 	
+	<!-- 배치스텝로그 수정 -->
 	<update id="batchsteplog.update" parameterClass="BatchStepLog"><![CDATA[ 
 		UPDATE tr_batchsteplog 
-		SET tsl_endtime = now(), tsl_processtime = now()-tsl_starttime, tsl_resultyn = #resultyn#, tsl_resultmsg = #resultmsg# 
+		SET tsl_endtime = now()
+		  , tsl_processtime = now()-tsl_starttime
+		  , tsl_resultyn = #resultyn#
+		  , tsl_resultmsg = #resultmsg# 
 		WHERE tsl_seq = #seq#
 	]]></update>
 	
+	<!-- 배치스텝로그 로그경로 수정 -->
 	<update id="batchsteplog.update.logpath" parameterClass="BatchStepLog"><![CDATA[ 
 		UPDATE tr_batchsteplog 
 		SET tsl_logpath = #logpath#
 		WHERE tsl_seq = #seq#
 	]]></update>
 	
+	<!-- 배치스텝로그 삭제 -->
 	<delete id="batchsteplog.delete" parameterClass="BatchStepLog"><![CDATA[ 
 		DELETE FROM tr_batchsteplog
 		WHERE tsl_seq = #seq#
 	]]></delete>
 	
+	<!-- 배치스텝로그 정보 가져오기 -->
 	<select id="batchsteplog.info" resultMap="batchsteplog" parameterClass="BatchStepLog"><![CDATA[ 
-		SELECT tsl_seq, tjl_seq, mbj_seq, mbj_name, mbj_smslist, mbj_emaillist, tsl_starttime, tsl_endtime, tsl_processtime, tsl_resultyn, tsl_resultmsg, tsl_logpath 
+		SELECT tsl_seq
+		     , tjl_seq
+		     , mbj_seq
+		     , mbj_name
+		     , mbj_smslist
+		     , mbj_emaillist
+		     , tsl_starttime
+		     , tsl_endtime
+		     , tsl_processtime
+		     , tsl_resultyn
+		     , tsl_resultmsg
+		     , tsl_logpath 
 		FROM tvw_batchsteplog
 		]]>
 		<dynamic prepend="WHERE">
@@ -51,6 +84,7 @@
 		</dynamic>
 	</select>
 	
+	<!-- 배치스텝로그 리스트 where -->
 	<sql id="batchsteplog.list.where">
 		<dynamic prepend="WHERE">
 			<isGreaterThan prepend="AND" property="batchjoblog.seq" compareValue="0"><![CDATA[ 
@@ -58,18 +92,33 @@
 			]]></isGreaterThan>
 		</dynamic>
 	</sql>
+	
+	<!-- 배치스텝로그 리스트 -->
 	<select id="batchsteplog.list" resultMap="batchsteplog" parameterClass="BatchStepLog"><![CDATA[ 
-		SELECT tsl_seq, tjl_seq, mbj_seq, mbj_name, mbj_smslist, mbj_emaillist, tsl_starttime, tsl_endtime, tsl_processtime, tsl_resultyn, tsl_resultmsg, tsl_logpath 
+		SELECT tsl_seq
+		     , tjl_seq
+		     , mbj_seq
+		     , mbj_name
+		     , mbj_smslist
+		     , mbj_emaillist
+		     , tsl_starttime
+		     , tsl_endtime
+		     , tsl_processtime
+		     , tsl_resultyn
+		     , tsl_resultmsg
+		     , tsl_logpath 
 		FROM tvw_batchsteplog
 		]]>
 		<include refid="batchsteplog.list.where"/><![CDATA[
-		ORDER BY tsl_starttime
+		ORDER BY tsl_endtime asc
 		]]><isNotNull property="paging">
 			<isGreaterThan property="paging.nowpage" compareValue="0"><![CDATA[ 
 				LIMIT #paging.limitstart#, #paging.listsize#
 			]]></isGreaterThan>
 		</isNotNull>
 	</select>
+	
+	<!-- 배치스텝로그 리스트 총 카운트 -->
 	<select id="batchsteplog.list.count" resultClass="long" parameterClass="BatchStepLog"><![CDATA[ 
 		SELECT count(tsl_seq) cnt
 		FROM tr_batchsteplog

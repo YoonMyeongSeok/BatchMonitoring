@@ -1,14 +1,14 @@
 10
 
 dir
-155
+240
 svn://114.200.199.205/repos/batch/trunk/boneis/src/main/java/com/boneis/support
 svn://114.200.199.205/repos/batch
 
 
 
-2013-08-09T09:09:10.218341Z
-155
+2013-08-22T09:19:47.430084Z
+238
 yms0312
 
 
@@ -33,6 +33,9 @@ batchlauncher
 dir
 
 config
+dir
+
+connection
 dir
 
 util

@@ -1,0 +1,412 @@
+<?xml version="1.1" encoding="utf-8"?>
+<e:Document xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:e="http://exerd.tomato.com/model"
+	xmlns:mysql="http://exerd.tomato.com/mysql/model" UUID="Document_Oq0DIAiAEeOZbZo5J3UDrA"
+	activeSchema="Schema_Oq0DIwiAEeOZbZo5J3UDrA" version="2.2.0.20121130-1910"
+	product="com.tomato.db.mysql">
+	<relationManager>
+		<relation key="FKCGroup_Oq1RTQiAEeOZbZo5J3UDrA">
+			<value foreignKeyColumnGroup="FKCGroup_Oq1RTQiAEeOZbZo5J3UDrA" />
+		</relation>
+		<relation key="FKCGroup_Oq1RWgiAEeOZbZo5J3UDrA">
+			<value foreignKeyColumnGroup="FKCGroup_Oq1RWgiAEeOZbZo5J3UDrA" />
+		</relation>
+	</relationManager>
+	<diagrams UUID="Diagram_S1FrMAiAEeOZbZo5J3UDrA" logicalName="boneisbatch"
+		physicalName="boneisbatch">
+		<diagramEntry xsi:type="e:TableDiagram" location="Point(32.0, 467.0)"
+			table="Table_Oq0DJAiAEeOZbZo5J3UDrA" />
+		<diagramEntry xsi:type="e:TableDiagram" location="Point(543.0, 16.0)"
+			table="Table_Oq0DKQiAEeOZbZo5J3UDrA" />
+		<diagramEntry xsi:type="e:TableDiagram" location="Point(17.0, 16.0)"
+			table="Table_Oq0qOQiAEeOZbZo5J3UDrA" />
+		<diagramEntry xsi:type="e:TableDiagram" location="Point(544.0, 135.0)"
+			table="Table_Oq1RQgiAEeOZbZo5J3UDrA" />
+		<diagramEntry xsi:type="e:TableDiagram" location="Point(578.0, 365.0)"
+			table="Table_Oq1RTwiAEeOZbZo5J3UDrA" />
+		<viewSettings showAltTableName="false">
+			<cellsToShow>name</cellsToShow>
+			<cellsToShow>domain</cellsToShow>
+			<cellsToShow>dataType</cellsToShow>
+			<cellsToShow>comment</cellsToShow>
+		</viewSettings>
+		<printSettings marginTop="10" marginRight="10"
+			marginBottom="10" marginLeft="10" paperKind="A4" paperOrientation="landscape"
+			header="${파일이름} - ${다이어그램이름} - ${페이지번호} / ${전체페이지}" footter="${년}-${월}-${일} ${시}:${분}에 인쇄 됨" />
+	</diagrams>
+	<configuration>
+		<domainDefinition />
+		<viewSettingsPreset name="eXERD 기본"
+			showAltTableName="false">
+			<cellsToShow>name</cellsToShow>
+			<cellsToShow>domain</cellsToShow>
+			<cellsToShow>dataType</cellsToShow>
+		</viewSettingsPreset>
+		<viewSettingsPreset name="엔티티 모드" showAltTableName="false">
+			<cellsToShow>name</cellsToShow>
+			<cellsToShow>domain</cellsToShow>
+		</viewSettingsPreset>
+		<viewSettingsPreset name="E-R 개요 모드" columnFilter="tableOnly"
+			showTableComment="true">
+			<cellsToShow>name</cellsToShow>
+			<cellsToShow>domain</cellsToShow>
+			<cellsToShow>dataType</cellsToShow>
+		</viewSettingsPreset>
+		<viewSettingsPreset showColumnHeader="true" name="논리/물리 동시편집">
+			<cellsToShow>name</cellsToShow>
+			<cellsToShow>oppositeModeName</cellsToShow>
+			<cellsToShow>domain</cellsToShow>
+			<cellsToShow>dataType</cellsToShow>
+			<cellsToShow>nullable</cellsToShow>
+		</viewSettingsPreset>
+	</configuration>
+	<databaseModel UUID="DModel_Oq0DIgiAEeOZbZo5J3UDrA"
+		logicalName="boneisbatch" physicalName="boneisbatch">
+		<physicalProperties xsi:type="mysql:DatabaseProperties" />
+		<schema UUID="Schema_Oq0DIwiAEeOZbZo5J3UDrA" logicalName="boneisbatch"
+			physicalName="boneisbatch">
+			<physicalProperties xsi:type="mysql:SchemaProperties"
+				characterSet="utf8" collation="utf8_general_ci" />
+			<tables UUID="Table_Oq0DJAiAEeOZbZo5J3UDrA" logicalName="ba_sequence"
+				physicalName="ba_sequence" comment="">
+				<physicalProperties xsi:type="mysql:TableProperties"
+					engine="InnoDB" characterSet="utf8" collation="utf8_general_ci">
+					<partition>
+						<partitionAlgorithm partitionsNum="0" />
+						<subpartitionAlgorithm />
+					</partition>
+				</physicalProperties>
+				<columns UUID="Column_Oq0DJQiAEeOZbZo5J3UDrA" logicalName="bse_id"
+					physicalName="bse_id" comment="시퀀스가 사용 될 테이블 명" dataType="VARCHAR(40)"
+					notNull="TRUE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+					<memberships key="PKCGroup_Oq0DJwiAEeOZbZo5J3UDrA">
+						<value xsi:type="e:PrimaryKeyMembership" group="PKCGroup_Oq0DJwiAEeOZbZo5J3UDrA"
+							entryIndex="0" sortType="" />
+					</memberships>
+				</columns>
+				<columns UUID="Column_Oq0DJgiAEeOZbZo5J3UDrA" logicalName="bse_max"
+					physicalName="bse_max" comment="최대 시퀀스 수" dataType="BIGINT(20)"
+					notNull="TRUE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columnGroups xsi:type="e:PrimaryKeyColumnGroup"
+					UUID="PKCGroup_Oq0DJwiAEeOZbZo5J3UDrA" logicalName="PRIMARY"
+					physicalName="PRIMARY" comment="">
+					<physicalProperties xsi:type="mysql:IndexProperties"
+						indexType="BTREE" />
+					<primaryKeyConstraint UUID="PKConstraint_Oq0DKAiAEeOZbZo5J3UDrA"
+						logicalName="PRIMARY" physicalName="PRIMARY" />
+				</columnGroups>
+			</tables>
+			<tables UUID="Table_Oq0DKQiAEeOZbZo5J3UDrA" logicalName="ba_status"
+				physicalName="ba_status" comment="">
+				<physicalProperties xsi:type="mysql:TableProperties"
+					engine="InnoDB" characterSet="utf8" collation="utf8_general_ci">
+					<partition>
+						<partitionAlgorithm partitionsNum="0" />
+						<subpartitionAlgorithm />
+					</partition>
+				</physicalProperties>
+				<columns UUID="Column_Oq0DKgiAEeOZbZo5J3UDrA" logicalName="bst_serverip"
+					physicalName="bst_serverip" comment="배치서버IP" dataType="VARCHAR(40)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0DKwiAEeOZbZo5J3UDrA" logicalName="bst_execyn"
+					physicalName="bst_execyn" comment="배치서버실행유무" dataType="INT(11)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+			</tables>
+			<tables UUID="Table_Oq0qOQiAEeOZbZo5J3UDrA" logicalName="ma_batchjob"
+				physicalName="ma_batchjob" comment="">
+				<physicalProperties xsi:type="mysql:TableProperties"
+					engine="InnoDB" characterSet="utf8" collation="utf8_general_ci">
+					<partition>
+						<partitionAlgorithm partitionsNum="0" />
+						<subpartitionAlgorithm />
+					</partition>
+				</physicalProperties>
+				<columns UUID="Column_Oq0qOgiAEeOZbZo5J3UDrA" logicalName="mbj_seq"
+					physicalName="mbj_seq" comment="배치실행번호" dataType="BIGINT(20)"
+					notNull="TRUE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+					<memberships key="PKCGroup_Oq1RQAiAEeOZbZo5J3UDrA">
+						<value xsi:type="e:PrimaryKeyMembership" group="PKCGroup_Oq1RQAiAEeOZbZo5J3UDrA"
+							entryIndex="0" sortType="" />
+					</memberships>
+				</columns>
+				<columns UUID="Column_Oq0qOwiAEeOZbZo5J3UDrA" logicalName="mbj_name"
+					physicalName="mbj_name" comment="배치명" dataType="VARCHAR(40)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qPAiAEeOZbZo5J3UDrA" logicalName="mbj_class"
+					physicalName="mbj_class" comment="배치클래스" dataType="VARCHAR(160)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qPQiAEeOZbZo5J3UDrA" logicalName="mbj_serverip"
+					physicalName="mbj_serverip" comment="배치실행 서버IP" dataType="VARCHAR(40)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qPgiAEeOZbZo5J3UDrA" logicalName="mbj_serveros"
+					physicalName="mbj_serveros" comment="배치실행 서버OS" dataType="VARCHAR(40)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qPwiAEeOZbZo5J3UDrA" logicalName="mbj_execplace"
+					physicalName="mbj_execplace" comment="실행장소(내부,외부)" dataType="INT(11)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qQAiAEeOZbZo5J3UDrA" logicalName="mbj_cronexpression"
+					physicalName="mbj_cronexpression" comment="배치실행시간" dataType="VARCHAR(40)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qQQiAEeOZbZo5J3UDrA" logicalName="mbj_useyn"
+					physicalName="mbj_useyn" comment="사용유무" dataType="INT(11)" notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qQgiAEeOZbZo5J3UDrA" logicalName="mbj_execyn"
+					physicalName="mbj_execyn" comment="실행유무" dataType="INT(11)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qQwiAEeOZbZo5J3UDrA" logicalName="mbj_starttime"
+					physicalName="mbj_starttime" comment="배치시작일시" dataType="DATETIME"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qRAiAEeOZbZo5J3UDrA" logicalName="mbj_endtime"
+					physicalName="mbj_endtime" comment="배치종료일시" dataType="DATETIME"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qRQiAEeOZbZo5J3UDrA" logicalName="mbj_processtime"
+					physicalName="mbj_processtime" comment="실행소요시간" dataType="BIGINT(20)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qRgiAEeOZbZo5J3UDrA" logicalName="mbj_lastresultyn"
+					physicalName="mbj_lastresultyn" comment="최근결과이력" dataType="INT(11)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qRwiAEeOZbZo5J3UDrA" logicalName="mbj_msg"
+					physicalName="mbj_msg" comment="메세지" dataType="VARCHAR(160)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qSAiAEeOZbZo5J3UDrA" logicalName="mbj_smslist"
+					physicalName="mbj_smslist" comment="SMS목록" dataType="VARCHAR(500)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qSQiAEeOZbZo5J3UDrA" logicalName="mbj_emaillist"
+					physicalName="mbj_emaillist" comment="EMAIL목록" dataType="VARCHAR(500)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qSgiAEeOZbZo5J3UDrA" logicalName="mbj_stopyn"
+					physicalName="mbj_stopyn" comment="강제종료유무" dataType="VARCHAR(3)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qSwiAEeOZbZo5J3UDrA" logicalName="mbj_pid"
+					physicalName="mbj_pid" comment="배치PID" dataType="VARCHAR(6)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qTAiAEeOZbZo5J3UDrA" logicalName="serverUseMem"
+					physicalName="serverUseMem" comment="서버MEM사용율" dataType="VARCHAR(10)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qTQiAEeOZbZo5J3UDrA" logicalName="serverUseCpu"
+					physicalName="serverUseCpu" comment="서버CPU사용율" dataType="VARCHAR(10)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qTgiAEeOZbZo5J3UDrA" logicalName="batchUseMem"
+					physicalName="batchUseMem" comment="배치MEM사용율" dataType="VARCHAR(10)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq0qTwiAEeOZbZo5J3UDrA" logicalName="batchUseCpu"
+					physicalName="batchUseCpu" comment="배치CPU사용율" dataType="VARCHAR(10)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columnGroups xsi:type="e:PrimaryKeyColumnGroup"
+					UUID="PKCGroup_Oq1RQAiAEeOZbZo5J3UDrA" logicalName="PRIMARY"
+					physicalName="PRIMARY" comment="">
+					<physicalProperties xsi:type="mysql:IndexProperties"
+						indexType="BTREE" />
+					<primaryKeyConstraint UUID="PKConstraint_Oq1RQQiAEeOZbZo5J3UDrA"
+						logicalName="PRIMARY" physicalName="PRIMARY" />
+				</columnGroups>
+			</tables>
+			<tables UUID="Table_Oq1RQgiAEeOZbZo5J3UDrA" logicalName="tr_batchjoblog"
+				physicalName="tr_batchjoblog" comment="">
+				<physicalProperties xsi:type="mysql:TableProperties"
+					engine="InnoDB" characterSet="utf8" collation="utf8_general_ci">
+					<partition>
+						<partitionAlgorithm partitionsNum="0" />
+						<subpartitionAlgorithm />
+					</partition>
+				</physicalProperties>
+				<columns UUID="Column_Oq1RQwiAEeOZbZo5J3UDrA" logicalName="tjl_seq"
+					physicalName="tjl_seq" comment="잡로그번호" dataType="BIGINT(20)"
+					notNull="TRUE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+					<memberships key="PKCGroup_Oq1RSwiAEeOZbZo5J3UDrA">
+						<value xsi:type="e:PrimaryKeyMembership" group="PKCGroup_Oq1RSwiAEeOZbZo5J3UDrA"
+							entryIndex="0" sortType="" />
+					</memberships>
+				</columns>
+				<columns UUID="Column_Oq1RRAiAEeOZbZo5J3UDrA" logicalName="mbj_seq"
+					physicalName="mbj_seq" comment="배치실행번호" dataType="BIGINT(20)"
+					notNull="TRUE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+					<memberships key="FKCGroup_Oq1RTQiAEeOZbZo5J3UDrA">
+						<value xsi:type="e:ColumnReference" group="FKCGroup_Oq1RTQiAEeOZbZo5J3UDrA"
+							entryIndex="0" sortType="" parentColumn="Column_Oq0qOgiAEeOZbZo5J3UDrA" />
+					</memberships>
+				</columns>
+				<columns UUID="Column_Oq1RRQiAEeOZbZo5J3UDrA" logicalName="tjl_starttime"
+					physicalName="tjl_starttime" comment="배치시작일시" dataType="DATETIME"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq1RRgiAEeOZbZo5J3UDrA" logicalName="tjl_endtime"
+					physicalName="tjl_endtime" comment="배치종료일시" dataType="DATETIME"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq1RRwiAEeOZbZo5J3UDrA" logicalName="tjl_processtime"
+					physicalName="tjl_processtime" comment="실행소요시간" dataType="BIGINT(20)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq1RSAiAEeOZbZo5J3UDrA" logicalName="tjl_resultyn"
+					physicalName="tjl_resultyn" comment="최근결과이력" dataType="INT(11)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq1RSQiAEeOZbZo5J3UDrA" logicalName="tjl_resultmsg"
+					physicalName="tjl_resultmsg" comment="결과메세지" dataType="VARCHAR(500)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq1RSgiAEeOZbZo5J3UDrA" logicalName="tjl_logpath"
+					physicalName="tjl_logpath" comment="로그파일경로" dataType="VARCHAR(160)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columnGroups xsi:type="e:PrimaryKeyColumnGroup"
+					UUID="PKCGroup_Oq1RSwiAEeOZbZo5J3UDrA" logicalName="PRIMARY"
+					physicalName="PRIMARY" comment="">
+					<physicalProperties xsi:type="mysql:IndexProperties"
+						indexType="BTREE" />
+					<primaryKeyConstraint UUID="PKConstraint_Oq1RTAiAEeOZbZo5J3UDrA"
+						logicalName="PRIMARY" physicalName="PRIMARY" />
+				</columnGroups>
+				<columnGroups xsi:type="e:ForeignKeyColumnGroup"
+					UUID="FKCGroup_Oq1RTQiAEeOZbZo5J3UDrA" logicalName="fk_tr_joblog_ma_batchjob1_idx"
+					physicalName="fk_tr_joblog_ma_batchjob1_idx" comment=""
+					parentColumnGroup="PKCGroup_Oq1RQAiAEeOZbZo5J3UDrA" useIndexing="true">
+					<physicalProperties xsi:type="mysql:IndexProperties"
+						indexType="BTREE" />
+					<foreignKeyConstraint UUID="FKConstraint_Oq1RTgiAEeOZbZo5J3UDrA"
+						logicalName="fk_tr_joblog_ma_batchjob1" physicalName="fk_tr_joblog_ma_batchjob1">
+						<physicalProperties xsi:type="mysql:ForeignKeyConstraintProperties"
+							onDeleteRule="NO ACTION" onUpdateRule="NO ACTION" />
+					</foreignKeyConstraint>
+				</columnGroups>
+			</tables>
+			<tables UUID="Table_Oq1RTwiAEeOZbZo5J3UDrA" logicalName="tr_batchsteplog"
+				physicalName="tr_batchsteplog" comment="">
+				<physicalProperties xsi:type="mysql:TableProperties"
+					engine="InnoDB" characterSet="utf8" collation="utf8_general_ci">
+					<partition>
+						<partitionAlgorithm partitionsNum="0" />
+						<subpartitionAlgorithm />
+					</partition>
+				</physicalProperties>
+				<columns UUID="Column_Oq1RUAiAEeOZbZo5J3UDrA" logicalName="tsl_seq"
+					physicalName="tsl_seq" comment="단계로그번호" dataType="BIGINT(20)"
+					notNull="TRUE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+					<memberships key="PKCGroup_Oq1RWAiAEeOZbZo5J3UDrA">
+						<value xsi:type="e:PrimaryKeyMembership" group="PKCGroup_Oq1RWAiAEeOZbZo5J3UDrA"
+							entryIndex="0" sortType="" />
+					</memberships>
+				</columns>
+				<columns UUID="Column_Oq1RUQiAEeOZbZo5J3UDrA" logicalName="tjl_seq"
+					physicalName="tjl_seq" comment="잡로그번호" dataType="BIGINT(20)"
+					notNull="TRUE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+					<memberships key="FKCGroup_Oq1RWgiAEeOZbZo5J3UDrA">
+						<value xsi:type="e:ColumnReference" group="FKCGroup_Oq1RWgiAEeOZbZo5J3UDrA"
+							entryIndex="0" sortType="" parentColumn="Column_Oq1RQwiAEeOZbZo5J3UDrA" />
+					</memberships>
+				</columns>
+				<columns UUID="Column_Oq1RUgiAEeOZbZo5J3UDrA" logicalName="tsl_starttime"
+					physicalName="tsl_starttime" comment="배치시작일시" dataType="DATETIME"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq1RUwiAEeOZbZo5J3UDrA" logicalName="tsl_endtime"
+					physicalName="tsl_endtime" comment="배치종료일시" dataType="DATETIME"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq1RVAiAEeOZbZo5J3UDrA" logicalName="tsl_processtime"
+					physicalName="tsl_processtime" comment="실행소요시간" dataType="BIGINT(20)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq1RVQiAEeOZbZo5J3UDrA" logicalName="tsl_resultyn"
+					physicalName="tsl_resultyn" comment="결과" dataType="INT(11)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq1RVgiAEeOZbZo5J3UDrA" logicalName="tsl_resultmsg"
+					physicalName="tsl_resultmsg" comment="결과메세지" dataType="VARCHAR(500)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columns UUID="Column_Oq1RVwiAEeOZbZo5J3UDrA" logicalName="tsl_logpath"
+					physicalName="tsl_logpath" comment="로그파일경로" dataType="VARCHAR(160)"
+					notNull="FALSE">
+					<physicalProperties xsi:type="mysql:ColumnProperties" />
+				</columns>
+				<columnGroups xsi:type="e:PrimaryKeyColumnGroup"
+					UUID="PKCGroup_Oq1RWAiAEeOZbZo5J3UDrA" logicalName="PRIMARY"
+					physicalName="PRIMARY" comment="">
+					<physicalProperties xsi:type="mysql:IndexProperties"
+						indexType="BTREE" />
+					<primaryKeyConstraint UUID="PKConstraint_Oq1RWQiAEeOZbZo5J3UDrA"
+						logicalName="PRIMARY" physicalName="PRIMARY" />
+				</columnGroups>
+				<columnGroups xsi:type="e:ForeignKeyColumnGroup"
+					UUID="FKCGroup_Oq1RWgiAEeOZbZo5J3UDrA" logicalName="fk_tr_steplog_tr_joblog1_idx"
+					physicalName="fk_tr_steplog_tr_joblog1_idx" comment=""
+					parentColumnGroup="PKCGroup_Oq1RSwiAEeOZbZo5J3UDrA" useIndexing="true">
+					<physicalProperties xsi:type="mysql:IndexProperties"
+						indexType="BTREE" />
+					<foreignKeyConstraint UUID="FKConstraint_Oq14UAiAEeOZbZo5J3UDrA"
+						logicalName="fk_tr_steplog_tr_joblog1" physicalName="fk_tr_steplog_tr_joblog1">
+						<physicalProperties xsi:type="mysql:ForeignKeyConstraintProperties"
+							onDeleteRule="NO ACTION" onUpdateRule="NO ACTION" />
+					</foreignKeyConstraint>
+				</columnGroups>
+			</tables>
+		</schema>
+	</databaseModel>
+	<sharedIcons />
+</e:Document>

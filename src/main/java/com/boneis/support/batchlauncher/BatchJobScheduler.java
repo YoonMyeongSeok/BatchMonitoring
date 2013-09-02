@@ -28,12 +28,12 @@ public class BatchJobScheduler {
 				"com/boneis/support/batchlauncher/config/scheduler-context.xml",
 				"com/boneis/batchjob/base/config/base-context.xml"
 				});
-		Scheduler scheduler = (Scheduler) ac.getBean("schedulerFactoryBean");
+		Scheduler scheduler = (Scheduler) ac.getBean("schedulerFactoryBean");		// scheduler설정 내용 가져오기
 		BatchJobRepository batchjobRepository = (BatchJobRepository)ac.getBean("batchjobRepository");
 		BatchJob batchjob = new BatchJob();
 		
 		batchjob.setRepository(batchjobRepository);
-		batchjob.setUseyn(Batch.USE_Y);
+		batchjob.setUseyn(Batch.USE_Y);		//useYn - 1로 설정
 		List<BatchJob> list = batchjob.getList();
 		logger.info("name?"+batchjob.getName());
 		for(int i=0;i<list.size();i++){
@@ -52,31 +52,6 @@ public class BatchJobScheduler {
 		scheduler.start();
 		
 		logger.info("list size : "+ list.size());
-		
-		/*// 하나의 배치처리 프로세스 시작
-		JobDetailBean jobDetail = new JobDetailBean(); 
-		jobDetail.setName("batchnameJob");
-		jobDetail.setJobClass(com.codeinven.support.batch.test.TestJob.class);
-		
-		CronTriggerBean cronTrigger = new CronTriggerBean();
-		cronTrigger.setName("batchnameTrigger");
-		cronTrigger.setCronExpression("0 * * * * ?");
-		cronTrigger.afterPropertiesSet();
-		
-		scheduler.scheduleJob(jobDetail, cronTrigger);
-		
-		JobDetailBean jobDetail2 = new JobDetailBean(); 
-		jobDetail2.setName("batchnameJob2");
-		jobDetail2.setJobClass(com.codeinven.support.batch.test.TestJob2.class);
-		
-		CronTriggerBean cronTrigger2 = new CronTriggerBean();
-		cronTrigger2.setName("batchnameTrigger2");
-		cronTrigger2.setCronExpression("20 * * * * ?");
-		cronTrigger2.afterPropertiesSet();
-		
-		scheduler.scheduleJob(jobDetail2, cronTrigger2);
-		// 하나의 배치처리 프로세스 종료
-		scheduler.start();*/
 		
 		logger.info("scheduler started!!");
 	}

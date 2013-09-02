@@ -11,43 +11,14 @@ public abstract class Domain {
 	
 	private String NAMESPACE;
 	private String findmode;
-	private Message message;
-	private Paging paging;
-	private SearchParams<?> searchparams;
+	private Message message;					// 메시지
+	private Paging paging;						// 페이징
+	private SearchParams<?> searchparams;		// 검색 파라미터
 	
 	// Behavior
 	@Override
 	public String toString() {
-		
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
-		
-		/*
-		Method[] arrMethod = this.getClass().getMethods();
-		StringBuffer sb = new StringBuffer(this.getClass().toString());
-		sb.append(" => [");
-		Object[] args = null;
-		
-		try {
-			for(Method m : arrMethod) {
-				if(m.getName().startsWith("get") && !m.getName().equals("getClass")
-				&& !m.getName().equals("getListCount") && !m.getName().equals("getInfo")
-				&& !m.getName().equals("getList")&& !m.getName().equals("getRepository")) { 
-					sb.append(m.getName());
-					sb.append(": ");
-					sb.append(m.invoke(this, args));
-					sb.append(", ");
-				}
-			}
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
-		
-		return sb.toString().substring(0, sb.length() - 2)+"]";
-		*/
 	}
 	
 	// Get & Set

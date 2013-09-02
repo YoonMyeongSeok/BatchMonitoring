@@ -13,7 +13,6 @@
 		<result property="cronexpression" column="mbj_cronexpression"/>
 		<result property="serverip" column="mbj_serverip"/>
 		<result property="serveros" column="mbj_serveros"/>
-		<result property="execplace" column="mbj_execplace"/>
 		<result property="useyn" column="mbj_useyn"/>
 		<result property="execyn" column="mbj_execyn"/>
 		<result property="starttime" column="mbj_starttime"/>
@@ -36,32 +35,89 @@
 		<result property="emaillist" column="mbj_emaillist"/>
 	</resultMap>
 	
+	<!-- 배치잡 등록 관련 -->
 	<insert id="batchjob.insert" parameterClass="BatchJob"><![CDATA[ 
-		INSERT INTO ma_batchjob
-		(mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn, mbj_starttime, mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn, mbj_pid) 
-		VALUES ( #seq#, #name#, #clazz#, #cronexpression#, #serverip#, #serveros#, #execplace#, #useyn#, #execyn#, #starttime#, #endtime#, #processtime#, 0, #smslist#, #emaillist#, 'N' )
+		INSERT INTO ma_batchjob(
+				mbj_seq
+			  , mbj_name
+			  , mbj_class
+			  , mbj_cronexpression
+			  , mbj_serverip
+			  , mbj_serveros
+			  , mbj_useyn
+			  , mbj_execyn
+			  , mbj_starttime
+			  , mbj_endtime
+			  , mbj_processtime
+			  , mbj_lastresultyn
+			  , mbj_smslist
+			  , mbj_emaillist
+			  , mbj_stopyn
+		) VALUES ( 
+			    #seq#
+			  , #name#
+			  , #clazz#
+			  , #cronexpression#
+			  , #serverip#
+			  , #serveros#
+			  , #useyn#
+			  , #execyn#
+			  , #starttime#
+			  , #endtime#
+			  , #processtime#
+			  , 0
+			  , #smslist#
+			  , #emaillist#
+			  , 'N' 
+		)
 	]]></insert> 
 	
+	<!-- 배치잡 수정 관련 -->
 	<update id="batchjob.update" parameterClass="BatchJob"><![CDATA[ 
 		UPDATE ma_batchjob 
-		SET mbj_name = #name#, mbj_class = #clazz#, mbj_cronexpression = #cronexpression#, mbj_serverip = #serverip#, mbj_serveros = #serveros#
-		  , mbj_execplace = #execplace#, mbj_useyn = #useyn#, mbj_smslist = #smslist#, mbj_emaillist = #emaillist#, mbj_stopyn = 'N'
-		  , serverUseMem = #serverUseMem#, serverUseCpu = #serverUseCpu#, batchUseMem = #batchUseMem#, batchUseCpu = #batchUseCpu# 
+		SET 	mbj_name = #name#
+			  , mbj_class = #clazz#
+			  , mbj_cronexpression = #cronexpression#
+			  , mbj_serverip = #serverip#
+			  , mbj_serveros = #serveros#
+			  , mbj_useyn = #useyn#
+			  , mbj_smslist = #smslist#
+			  , mbj_emaillist = #emaillist#
+			  , mbj_stopyn = 'N'
+			  , serverUseMem = #serverUseMem#
+			  , serverUseCpu = #serverUseCpu#
+			  , batchUseMem = #batchUseMem#
+			  , batchUseCpu = #batchUseCpu# 
 		WHERE mbj_seq = #seq#
 	]]></update>
 	
+	<!-- 배치실행 관련 -->
 	<update id="batchjob.update.start" parameterClass="BatchJob"><![CDATA[ 
 		UPDATE ma_batchjob 
-		SET mbj_execyn = '1', mbj_starttime = now(), mbj_processtime = 0, mbj_lastresultyn = 3, mbj_stopyn = 'N'
+		SET mbj_execyn = '1'
+		  , mbj_starttime = now()
+		  , mbj_processtime = 0
+		  , mbj_stopyn = 'N'
 		WHERE mbj_seq = #seq#
 	]]></update>
 	
+	<!-- 배치종료 관련 -->
 	<update id="batchjob.update.end" parameterClass="BatchJob"><![CDATA[ 
 		UPDATE ma_batchjob 
-		SET mbj_execyn = '2', mbj_endtime = now(), mbj_processtime = now() - mbj_starttime, mbj_lastresultyn = #lastresultyn#, mbj_stopyn = 'Y'
+		SET mbj_execyn = '2'
+		  , mbj_endtime = now()
+		  , mbj_processtime = now() - mbj_starttime
 		WHERE mbj_seq = #seq#
 	]]></update>
 	
+	<!-- 배치종료 후 최근 이력 관련 -->
+	<update id="batchjob.update.resultyn" parameterClass="BatchJob"><![CDATA[ 
+		UPDATE ma_batchjob 
+		SET mbj_lastresultyn = #lastresultyn#
+		WHERE mbj_seq = #seq#
+	]]></update>
+	
+	<!-- 배치 강제종료 관련 -->
 	<update id="batchjob.update.stopyn" parameterClass="batchjob"><![CDATA[
 		UPDATE ma_batchjob
 		SET mbj_stopyn = #stopyn#
@@ -69,6 +125,7 @@
 	]]>
 	</update>
 	
+	<!-- 실행중인 배치 PID 업데이트 -->
 	<update id="batchjob.update.pid" parameterClass="batchjob"><![CDATA[
 		UPDATE ma_batchjob
 		SET mbj_pid = #pid#
@@ -76,6 +133,7 @@
 	]]>
 	</update>
 	
+	<!-- 실행중인 배치와 서버의 Memory & CPU 정보 업데이트 -->
 	<update id="batchjob.update.serverInfo" parameterClass="batchjob"><![CDATA[
 		UPDATE ma_batchjob
 		SET serverUseMem = #serverUseMem#
@@ -86,6 +144,7 @@
 	]]>
 	</update>
 	
+	<!-- 배치사용 유무 변경 -->
 	<update id="batchjob.update.useyn" parameterClass="BatchJob"><![CDATA[ 
 		UPDATE ma_batchjob 
 		SET mbj_useyn = #useyn#
@@ -99,15 +158,32 @@
 		AND mbj_useyn = 3
 	]]></update>
 	
+	<!-- 배치삭제 -->
 	<delete id="batchjob.delete" parameterClass="BatchJob"><![CDATA[ 
 		DELETE FROM ma_batchjob
 		WHERE mbj_seq = #seq#
 	]]></delete>
 	
+	<!-- 특정 배치의 정보 가져오기 -->
 	<select id="batchjob.info" resultMap="batchjob" parameterClass="BatchJob"><![CDATA[ 
-		SELECT mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn
-		     , mbj_starttime, mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn, mbj_pid
-		     , serverUseMem, serverUseCpu, batchUseMem, batchUseCpu 
+		SELECT mbj_seq, mbj_name
+		     , mbj_class, mbj_cronexpression
+		     , mbj_serverip
+		     , mbj_serveros
+		     , mbj_useyn
+		     , mbj_execyn
+		     , mbj_starttime
+		     , mbj_endtime
+		     , mbj_processtime
+		     , mbj_lastresultyn
+		     , mbj_smslist
+		     , mbj_emaillist
+		     , mbj_stopyn
+		     , mbj_pid
+		     , serverUseMem
+		     , serverUseCpu
+		     , batchUseMem
+		     , batchUseCpu 
 		FROM ma_batchjob
 		]]>
 		<dynamic prepend="WHERE">
@@ -117,6 +193,7 @@
 		</dynamic>
 	</select>
 	
+	<!-- 배치리스트 where -->
 	<sql id="batchjob.list.where">
 		<dynamic prepend="WHERE">
 			<isGreaterThan prepend="AND" property="useyn" compareValue="0"><![CDATA[ 
@@ -130,20 +207,41 @@
 			]]></isNotNull>
 		</dynamic>
 	</sql>
+	
+	<!-- 배치리스트 -->
 	<select id="batchjob.list" resultMap="batchjob" parameterClass="BatchJob"><![CDATA[ 
-		SELECT mbj_seq, mbj_name, mbj_class, mbj_cronexpression, mbj_serverip, mbj_serveros, mbj_execplace, mbj_useyn, mbj_execyn, mbj_starttime
-			 , mbj_endtime, mbj_processtime, mbj_lastresultyn, mbj_smslist, mbj_emaillist, mbj_stopyn, mbj_pid
-			 , serverUseMem, serverUseCpu, batchUseMem, batchUseCpu 
+		SELECT mbj_seq
+		     , mbj_name
+		     , mbj_class
+		     , mbj_cronexpression
+		     , mbj_serverip
+		     , mbj_serveros
+		     , mbj_useyn
+		     , mbj_execyn
+		     , mbj_starttime
+			 , mbj_endtime
+			 , mbj_processtime
+			 , mbj_lastresultyn
+			 , mbj_smslist
+			 , mbj_emaillist
+			 , mbj_stopyn
+			 , mbj_pid
+			 , serverUseMem
+			 , serverUseCpu
+			 , batchUseMem
+			 , batchUseCpu 
 		FROM ma_batchjob
 		]]>
 		<include refid="batchjob.list.where"/>
-		ORDER BY mbj_starttime desc
+		ORDER BY mbj_seq asc
 		<isNotNull property="paging">
 			<isGreaterThan property="paging.nowpage" compareValue="0"><![CDATA[ 
 				LIMIT #paging.limitstart#, #paging.listsize#
 			]]></isGreaterThan>
 		</isNotNull>
 	</select>
+	
+	<!-- 배치리스트 총 카운트 -->
 	<select id="batchjob.list.count" resultClass="long" parameterClass="BatchJob"><![CDATA[ 
 		SELECT count(mbj_seq) cnt
 		FROM ma_batchjob

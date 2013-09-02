@@ -12,27 +12,26 @@ import com.boneis.domain.base.root.Repository;
 public class BatchJob extends Entity<BatchJob> {
 	
 	private final String NAMESPACE = "batchjob";
-	private long seq;
-	private String name;
-	private String clazz;
-	private String cronexpression;
-	private String serverip;
-	private String serveros;
-	private long execplace;
-	private long useyn;
-	private long execyn;
-	private long lastresultyn;
-	private Timestamp starttime;
-	private Timestamp endtime;
-	private long processtime;
-	private String smslist; // ,로 구분
-	private String emaillist; // ,로 구분
-	private String stopyn; //Y:중지, N:실행가능
-	private String pid;
-	private String ServerUseMem;
-	private String ServerUseCpu;
-	private String batchUseMem;
-	private String batchUseCpu;
+	private long seq;				// 시퀀스 번호
+	private String name;			// 배치 이름
+	private String clazz;			// 배치 클래스
+	private String cronexpression;	// 스케쥴러 실행시간
+	private String serverip;		// 배치서버 IP
+	private String serveros;		// 배치서버 OS
+	private long useyn;				// 사용 여부
+	private long execyn;			// 실행 여부
+	private long lastresultyn;		// 종료 여부
+	private Timestamp starttime;	// 시작 시간
+	private Timestamp endtime;		// 종료 시간
+	private long processtime;		// 구동 시간
+	private String smslist; 		// ,로 구분
+	private String emaillist; 		// ,로 구분
+	private String stopyn; 			// Y:중지, N:실행가능
+	private String pid;				// 배치서버에서 받아온 PID
+	private String ServerUseMem;	// 배치서버에서 사용 중인 전체 메모리
+	private String ServerUseCpu;	// 배치서버에서 사용 중인 전체 CPU
+	private String batchUseMem;		// 배치서버에서 사용 중인 전체 메모리 중 해당 배치가 사용 중인 메모리
+	private String batchUseCpu;		// 배치서버에서 사용 중인 전체 CPU 중 해당 배치가 사용 중인 CPU
 	
 	// Constructor startd.............................
 	public BatchJob(){}
@@ -46,42 +45,62 @@ public class BatchJob extends Entity<BatchJob> {
 	// Constructor end................................
 	
 	// Abstract Behavior ///////////////////////////
+	/**
+	 * 배치 정보 GET
+	 */
 	@Override
 	@JsonIgnore
 	public BatchJob getInfo() {
 		return this.getRepository().getInfo(this);
 	}
+	
+	/**
+	 * 배치 리스트 GET
+	 */
 	@Override
 	@JsonIgnore
 	public List<BatchJob> getList() {
 		return this.getRepository().getList(this);
 	}
+	
+	/**
+	 * 검색 시 배치 리스트 GET
+	 */
 	@Override
 	@JsonIgnore
 	public List<BatchJob> getList(String findmode) {
 		this.setFindmode(findmode);
 		return this.getRepository().getList(this);
 	}
+	/**
+	 * 배치의 총 개수 GET
+	 */
 	@Override
 	@JsonIgnore
 	public long getListCount() {
 		return this.getRepository().getListCount(this);
 	}
+	
+	/**
+	 * 검색 시 배치의 총 개수 GET
+	 */
 	@Override
 	@JsonIgnore
 	public long getListCount(String findmode) {
 		this.setFindmode(findmode);
 		return this.getRepository().getListCount(this);
 	}
+	
 	@Override
 	public void add() {
 		this.getRepository().add(this);
 	}
+
 	@Override
 	public void update() {
 		this.getRepository().update(this);
 	}
-	@Override
+
 	public void remove() {
 		this.getRepository().remove(this);
 	}
@@ -128,12 +147,6 @@ public class BatchJob extends Entity<BatchJob> {
 	}
 	public void setServeros(String serveros) {
 		this.serveros = serveros;
-	}
-	public long getExecplace() {
-		return execplace;
-	}
-	public void setExecplace(long execplace) {
-		this.execplace = execplace;
 	}
 	public long getUseyn() {
 		return useyn;

@@ -12,6 +12,7 @@ public class BatchJobStatus extends Entity<BatchJobStatus> {
 	private final String NAMESPACE = "batchjobstatus";
 	private String serverip;
 	private long execyn;
+	private String connectyn;
 	
 	// Constructer ........................................
 	public BatchJobStatus(){}
@@ -60,6 +61,12 @@ public class BatchJobStatus extends Entity<BatchJobStatus> {
 		this.getRepository().remove(this);
 	}
 	
+	// Behavior .....................................
+	public void update(String findmode) {
+		this.setFindmode(findmode);
+		this.getRepository().update(this);
+	}
+	
 	// Get & Set ...........................................
 	public String getServerip() {
 		return serverip;
@@ -76,5 +83,10 @@ public class BatchJobStatus extends Entity<BatchJobStatus> {
 	public String getNAMESPACE() {
 		return NAMESPACE;
 	}
-	
+	public String getConnectyn() {
+		return connectyn;
+	}
+	public void setConnectyn(String connectyn) {
+		this.connectyn = connectyn;
+	}	
 }

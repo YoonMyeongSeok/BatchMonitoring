@@ -14,28 +14,7 @@
 	<logger name="com.boneis">
 		<level value="info" />
 	</logger>
-<!-- 
-	<category name="org.hibernate.type"> 
-		<priority value="TRACE"/> 
-	</category> 
- -->
-	<!-- 3rdparty Loggers -->
-	<logger name="org.springframework.core">
-		<level value="info" />
-	</logger>
-	
-	<logger name="org.springframework.beans">
-		<level value="info" />
-	</logger>
-	
-	<logger name="org.springframework.context">
-		<level value="info" />
-	</logger>
 
-	<logger name="org.springframework.web">
-		<level value="info" />
-	</logger>
-	
     <logger name="java.sql.Connection">
         <level value="info" />
     </logger>
@@ -49,5 +28,27 @@
 		<priority value="warn" />
 		<appender-ref ref="console" />
 	</root>
+	
+	<!-- 
+	<category name="org.hibernate.type"> 
+		<priority value="TRACE"/> 
+	</category> 
+
+	<logger name="org.springframework.core">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+ 
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+-->
 	
 </log4j:configuration>
